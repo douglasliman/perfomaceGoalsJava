@@ -1,0 +1,33 @@
+package ecommerce.model;
+
+public class ChocolateAoLeite extends Produto {
+	
+    private int teorCacau;
+    private String origemCacau;
+
+    public ChocolateAoLeite(int id, String nome, String descricao, String pais, float preco, String tipo,
+                             int teorCacau, String origemCacau) {
+        super(id, nome, descricao, pais, preco, tipo, teorCacau);
+        this.teorCacau = teorCacau;
+        this.origemCacau = origemCacau;
+    }
+
+    public void verificarDisponibilidade() {
+        System.out.println("Verificando disponibilidade de chocolate ao leite...");
+    }
+
+    public float calcularPrecoFrete(int distancia) {
+        // Implemente o cálculo do custo de frete aqui
+        return distancia * 0.5f; // Exemplo: R$0,50 por km
+    }
+    
+    @Override
+    public float calcularDesconto(int quantidade) {
+        float desconto = super.calcularDesconto(quantidade);
+
+        if (quantidade > 5) {
+            desconto += getPreco() * 0.1f;
+        }
+        return desconto;
+    }
+}
