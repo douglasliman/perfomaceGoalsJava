@@ -44,4 +44,10 @@ public class ProdutoController implements ProdutoRepository {
     public Set<Produto> buscarTodosProdutos() {
         return produtos;
     }
+
+	@Override
+	public Optional<Produto> buscarProdutoPorNome(String nome) {
+		// TODO Auto-generated method stub
+		return produtos.stream().filter(p -> p.getNome() == nome).findAny();
+	}
 }

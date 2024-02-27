@@ -13,6 +13,8 @@ public interface ProdutoRepository {
     void removerProduto(int idProduto);
 
     Optional<Produto> buscarProdutoPorId(int idProduto);
+    
+    Optional<Produto> buscarProdutoPorNome(String nome);
 
     Set<Produto> buscarTodosProdutos();
 }

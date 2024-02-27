@@ -51,10 +51,17 @@ public class Menu {
                     removerProduto(input, produtoRepository);
                     break;
                 case 5:
+                	buscarProdutoPorId(input,  produtoRepository);
+                    break;
+                case 6:
+                	buscarProdutoPorNome(input,  produtoRepository);
+                    break;
+                case 7:
                     System.out.println("\nTe vejo em breve!");
                     sobre();
                     input.close();
                     System.exit(0);
+                    
                 default:
                     System.out.println("\nOpção Inválida!\n");
                     break;
@@ -63,7 +70,12 @@ public class Menu {
         }
     }
 
-    public static void printMenu() {
+   
+
+
+
+
+	public static void printMenu() {
         System.out.println("*****************************************************");
         System.out.println("                                                     ");
         System.out.println("                   My ChocoLove                      ");
@@ -74,7 +86,9 @@ public class Menu {
         System.out.println("            2 - Listar todos os produtos             ");
         System.out.println("            3 - Atualizar dados do produto           ");
         System.out.println("            4 - Apagar produto                       ");
-        System.out.println("            5 - Sair                                 ");
+        System.out.println("            5 - buscar por id	                      ");
+        System.out.println("            6 - buscar por id	                      ");
+        System.out.println("            7 - Sair                                 ");
         System.out.println("                                                     ");
         System.out.println("*****************************************************");
         System.out.println("Entre com a opção desejada:                          ");
@@ -166,8 +180,7 @@ public class Menu {
             }
         }
     }
-
-
+    
     public static void atualizarProduto(Scanner input, ProdutoRepository produtoRepository) {
         int idProduto;
         Optional<Produto> produtoOptional;
@@ -175,17 +188,21 @@ public class Menu {
         do {
             System.out.println("Digite o ID do produto a ser atualizado:");
             idProduto = input.nextInt();
+            input.nextLine();
+
             produtoOptional = produtoRepository.buscarProdutoPorId(idProduto);
 
             if (!produtoOptional.isPresent()) {
-                System.out.println("Produto não encontrado. Digite novamente.");
+                System.out.println("Produto não encontrado. Digite novamente ou pressione 0 para voltar ao menu principal:");
+                if (input.nextInt() == 0) {
+                    return; 
+                }
             }
         } while (!produtoOptional.isPresent());
 
         Produto produto = produtoOptional.get();
 
         System.out.println("Digite o novo nome do produto:");
-        input.nextLine(); 
         String nome = input.nextLine();
         produto.setNome(nome);
 
@@ -197,14 +214,64 @@ public class Menu {
         String pais = input.nextLine();
         produto.setPais(pais);
 
-        System.out.println("Digite o novo preço do produto:");
-        float preco = input.nextFloat();
+        float preco;
+        while (true) {
+            System.out.println("Digite o novo preço do produto:");
+            try {
+                preco = input.nextFloat();
+                if (preco <= 0) {
+                    throw new InputMismatchException("O preço deve ser um valor positivo!");
+                }
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Valor de preço inválido! Digite novamente.");
+                input.nextLine(); 
+            }
+        }
         produto.setPreco(preco);
 
         produtoRepository.atualizarDadosProduto(produto);
         System.out.println("Produto atualizado com sucesso!");
     }
 
+
+    private static void buscarProdutoPorId(Scanner input, ProdutoRepository produtoRepository) {
+        System.out.println("Digite o ID do produto a ser encontrado:");
+        int idProduto = input.nextInt();
+        input.nextLine();
+
+        Optional<Produto> produtoOptional = produtoRepository.buscarProdutoPorId(idProduto);
+
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+            System.out.println("Produto encontrado:");
+            System.out.println("ID: " + produto.getId());
+            produto.exibirDetalhes();
+            System.out.println("-----------------------------");
+        } else {
+            System.out.println("Produto não encontrado.");
+            System.out.println("-----------------------------");
+        }
+    }
+    
+    private static void buscarProdutoPorNome(Scanner input, ProdutoRepository produtoRepository) {
+        System.out.println("Digite o Nome do produto a ser encontrado:");
+        String nomeProduto = input.nextLine();
+        input.nextLine();
+
+        Optional<Produto> produtoOptional = produtoRepository.buscarProdutoPorNome(nomeProduto);
+
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+            System.out.println("Produto encontrado:");
+            System.out.println("Nome: " + produto.getNome());
+            produto.exibirDetalhes();
+            System.out.println("-----------------------------");
+        } else {
+            System.out.println("Produto não encontrado.");
+            System.out.println("-----------------------------");
+        }
+    }
     public static void removerProduto(Scanner input, ProdutoRepository produtoRepository) {
         System.out.println("Digite o ID do produto a ser removido:");
         int idProduto = input.nextInt();
