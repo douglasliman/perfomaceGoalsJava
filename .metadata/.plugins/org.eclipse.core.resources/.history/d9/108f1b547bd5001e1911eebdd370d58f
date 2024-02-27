@@ -1,0 +1,91 @@
+package ecommerce.controller;
+
+import ecommerce.model.Produto;
+
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+public class ProdutoController {
+
+    private Set<Produto> listaProdutos = new HashSet<>();
+    private int idProduto = 0;
+
+    public void adicionarEstoque(int idProduto, int quantidade) {
+        Optional<Produto> produtoOptional = buscarProdutoPorId(idProduto);
+        produtoOptional.ifPresent(produto -> {
+            produto.adicionarEstoque(quantidade);
+            System.out.println("Estoque do produto " + produto.getNome() + " atualizado para " + produto.getEstoque());
+        });
+        if (produtoOptional.isEmpty()) {
+            System.out.println("Produto com ID " + idProduto + " não encontrado.");
+        }
+    }
+
+    public boolean removerEstoque(int idProduto, int quantidade) {
+        Optional<Produto> produtoOptional = buscarProdutoPorId(idProduto);
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+            Optional<Integer> estoqueRemovido = produto.removerEstoque(quantidade);
+            if (estoqueRemovido.isPresent()) {
+                System.out.println("Foram removidos " + estoqueRemovido.get() + " itens do estoque do produto " + produto.getNome());
+                return true;
+            } else {
+                System.out.println("Não há estoque suficiente para remover " + quantidade + " itens do produto " + produto.getNome());
+                return false;
+            }
+        } else {
+            System.out.println("Produto com ID " + idProduto + " não encontrado.");
+            return false;
+        }
+    }
+
+    public int consultarEstoque(int idProduto) {
+        Optional<Produto> produtoOptional = buscarProdutoPorId(idProduto);
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+            return produto.getEstoque();
+        } else {
+            System.out.println("Produto com ID " + idProduto + " não encontrado.");
+            return -1;
+        }
+    }
+
+    public void cadastrarNovoProduto(Produto produto) {
+        produto.setId(++idProduto);
+        listaProdutos.add(produto);
+        System.out.println("Produto cadastrado com sucesso. ID do produto: " + produto.getId());
+    }
+
+    public void atualizarDadosProduto(Produto produto) {
+        Optional<Produto> produtoOptional = buscarProdutoPorId(produto.getId());
+        produtoOptional.ifPresentOrElse(
+                produtoExistente -> {
+                    produtoExistente.setNome(produto.getNome());
+                    produtoExistente.setDescricao(produto.getDescricao());
+                    produtoExistente.setPais(produto.getPais());
+                    produtoExistente.setPreco(produto.getPreco());
+                    produtoExistente.setTipo(produto.getTipo());
+                    System.out.println("Dados do produto atualizados com sucesso.");
+                },
+                () -> System.out.println("Produto com ID " + produto.getId() + " não encontrado.")
+        );
+    }
+
+    public void removerProduto(int idProduto) {
+        Optional<Produto> produtoOptional = buscarProdutoPorId(idProduto);
+        produtoOptional.ifPresentOrElse(
+                produto -> {
+                    listaProdutos.remove(produto);
+                    System.out.println("Produto " + produto.getNome() + " removido com sucesso.");
+                },
+                () -> System.out.println("Produto com ID " + idProduto + " não encontrado.")
+        );
+    }
+
+    public Optional<Produto> buscarProdutoPorId(int idProduto) {
+        return listaProdutos.stream()
+                .filter(produto -> produto.getId() == idProduto)
+                .findFirst();
+    }
+}

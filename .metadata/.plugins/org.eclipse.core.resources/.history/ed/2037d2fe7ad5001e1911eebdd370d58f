@@ -1,0 +1,178 @@
+package ecommerce;
+
+import ecommerce.controller.ProdutoController;
+import ecommerce.model.ChocolateAmargo;
+import ecommerce.model.ChocolateAoLeite;
+import ecommerce.model.ChocolateBranco;
+import ecommerce.model.ChocolateMeioAmargo;
+import ecommerce.model.Produto;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Menu {
+
+    private static final ProdutoController produtoController = new ProdutoController();
+    private static final Scanner input = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        while (true) {
+            printMenu();
+
+            int opcao = 0;
+            try {
+                opcao = input.nextInt();
+            } catch (Exception e) {
+                System.out.println("\nDigite valores inteiros!");
+                input.nextLine();
+            }
+
+            switch (opcao) {
+                case 1:
+                    cadastrarProduto();
+                    break;
+                case 2:
+                    System.out.println("Listar todas os Produtos\n\n");
+                    break;
+                case 3:
+                    System.out.println("Buscar Produto por nome\n\n");
+                    break;
+                case 4:
+                    System.out.println("Atualizar dados do produto\n\n");
+                    break;
+                case 5:
+                    System.out.println("Apagar a produto\n\n");
+                    break;
+                case 6:
+                    System.out.println("\nSaindooo!");
+                    sobre();
+                    input.close();
+                    System.exit(0);
+                default:
+                    System.out.println("\nOpção Inválida!\n");
+                    break;
+            }
+            keyPress();
+        }
+    }
+
+    public static void printMenu() {
+        System.out.println("*****************************************************");
+        System.out.println("                                                     ");
+        System.out.println("               Ecommerce Sem Nome temp               ");
+        System.out.println("                                                     ");
+        System.out.println("*****************************************************");
+        System.out.println("                                                     ");
+        System.out.println("            1 - Criar produto                        ");
+        System.out.println("            2 - Listar todos os produtos             ");
+        System.out.println("            3 - buscar produto por nome              ");
+        System.out.println("            4 - Atualizar Dados do produto            ");
+        System.out.println("            5 - Apagar produto                       ");
+        System.out.println("            6 - Sair                                 ");
+        System.out.println("                                                     ");
+        System.out.println("*****************************************************");
+        System.out.println("Entre com a opção desejada:                          ");
+        System.out.println("                                                     ");
+    }
+
+    public static void sobre() {
+        System.out.println("\n*********************************************************");
+        System.out.println("Projeto Desenvolvido por: ");
+        System.out.println("Douglas Lima de Queiroz");
+        System.out.println("*********************************************************");
+    }
+
+    public static void keyPress() {
+        try {
+            System.out.println("\n\nPressione Enter para Continuar...");
+            System.in.read();
+        } catch (Exception e) {
+            System.out.println("Você pressionou uma tecla diferente de enter!");
+        }
+    }
+
+    public static void cadastrarProduto() {
+        System.out.println("Digite o nome do produto:");
+        String nome = input.next();
+        System.out.println("Digite a descrição do produto:");
+        String descricao = input.next();
+        System.out.println("Digite o país de origem do produto:");
+        String pais = input.next();
+        System.out.println("Digite o preço do produto:");
+        float preco = 0;
+        try {
+            preco = input.nextFloat();
+        } catch (InputMismatchException e) {
+            System.out.println("Digite um valor válido para o preço do produto.");
+            input.nextLine(); 
+            return;
+        }
+
+        
+
+        System.out.println("\nEscolha o tipo de produto:");
+        System.out.println("1 - Chocolate Amargo");
+        System.out.println("2 - Chocolate ao Leite");
+        System.out.println("3 - Chocolate Branco");
+        System.out.println("4 - Chocolate Meio Amargo");
+        System.out.print("\nDigite o número correspondente ao tipo de chocolate desejado: ");
+        int opcaoTipo = input.nextInt();
+
+        String tipo;
+        switch (opcaoTipo) {
+            case 1:
+                tipo = "chocolateamargo";
+                break;
+            case 2:
+                tipo = "chocolateaoleite";
+                break;
+            case 3:
+                tipo = "chocolatebranco";
+                break;
+            case 4:
+                tipo = "chocolatemeioamargo";
+                break;
+            default:
+                System.out.println("Opção inválida. Voltando ao menu principal.");
+                return;
+        }
+
+        System.out.println("Digite a quantidade em estoque do produto:");
+        int estoque = input.nextInt();
+
+        Produto produto;
+        switch (tipo.toLowerCase()) {
+            case "chocolateamargo":
+                System.out.println("Digite o teor de cacau do chocolate amargo:");
+                int teorCacau = input.nextInt();
+                produto = new ChocolateAmargo(0, nome, descricao, pais, preco, tipo, teorCacau);
+                break;
+            case "chocolateaoleite":
+                System.out.println("Digite o teor de cacau do chocolate ao leite:");
+                teorCacau = input.nextInt();
+                System.out.println("Digite a origem do cacau do chocolate ao leite:");
+                String origemCacau = input.next();
+                produto = new ChocolateAoLeite(0, nome, descricao, pais, preco, tipo, teorCacau, origemCacau);
+                break;
+            case "chocolatebranco":
+                System.out.println("Digite o teor de leite do chocolate branco:");
+                int teorLeite = input.nextInt();
+                produto = new ChocolateBranco(0, nome, descricao, pais, preco, tipo, teorLeite);
+                break;
+            case "chocolatemeioamargo":
+                System.out.println("Digite o teor de cacau do chocolate meio amargo:");
+                teorCacau = input.nextInt();
+                System.out.println("Digite os ingredientes adicionais do chocolate meio amargo (separados por espaço):");
+                input.nextLine();
+                String[] ingredientesAdicionais = input.nextLine().split(" ");
+                produto = new ChocolateMeioAmargo(0, nome, descricao, pais, preco, tipo, teorCacau, ingredientesAdicionais);
+                break;
+            default:
+                System.out.println("Tipo de produto inválido.");
+                return;
+        }
+
+        produto.setEstoque(estoque);
+        produtoController.cadastrarNovoProduto(produto);
+    }
+}

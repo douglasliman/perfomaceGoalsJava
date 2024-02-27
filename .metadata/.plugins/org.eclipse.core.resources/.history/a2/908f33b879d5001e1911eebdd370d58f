@@ -1,0 +1,70 @@
+package ecommerce.controller;
+
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import ecommerce.model.Produto;
+import ecommerce.repository.ProdutoRepository;
+
+public class ProdutoController implements ProdutoRepository {
+	
+	private Set<Produto> listaProdutos = new HashSet<>();
+	private int idProduto = 0;
+	
+	@Override
+	public void cadastrarNovoProduto(Produto produto) {
+		produto.setId(++idProduto);
+        listaProdutos.add(produto);
+        System.out.println("Produto cadastrado com sucesso. ID do produto: " + produto.getId());
+	}
+	@Override
+	public void atualizarDadosProduto(Produto produto) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Optional<Produto> buscarProdutoPorId(int idProduto) {
+		// TODO Auto-generated method stub
+		return Optional.empty();
+	}
+	
+	@Override
+	public Set<Produto> buscarTodosProdutos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void removerProduto(int idProduto) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void adicionarEstoque(int idProduto, int quantidade) {
+			
+		
+	}
+
+	@Override
+	public boolean removerEstoque(int idProduto, int quantidade) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int consultarEstoque(int idProduto) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+
+
+	
+
+	
+
+}

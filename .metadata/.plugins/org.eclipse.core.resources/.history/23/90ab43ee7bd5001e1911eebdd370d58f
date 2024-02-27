@@ -1,0 +1,138 @@
+package ecommerce;
+
+import ecommerce.controller.ProdutoController;
+import ecommerce.model.Produto;
+
+import java.util.Optional;
+import java.util.Scanner;
+
+public class Menu {
+
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final ProdutoController produtoController = new ProdutoController();
+
+    public static void main(String[] args) {
+        while (true) {
+            printMenu();
+            int opcao = scanner.nextInt();
+            scanner.nextLine(); // Limpar o buffer do scanner
+
+            switch (opcao) {
+                case 1:
+                    cadastrarProduto();
+                    break;
+                case 2:
+                    listarProdutos();
+                    break;
+                case 3:
+                    buscarProdutoPorId();
+                    break;
+                case 4:
+                    atualizarDadosProduto();
+                    break;
+                case 5:
+                    removerProduto();
+                    break;
+                case 6:
+                    System.out.println("Saindo...");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Opção Inválida!");
+                    break;
+            }
+            pressioneEnterParaContinuar();
+        }
+    }
+
+    public static void printMenu() {
+        System.out.println("\n******************************");
+        System.out.println("        MENU DE OPÇÕES        ");
+        System.out.println("******************************");
+        System.out.println("1 - Cadastrar Produto");
+        System.out.println("2 - Listar Produtos");
+        System.out.println("3 - Buscar Produto por ID");
+        System.out.println("4 - Atualizar Dados do Produto");
+        System.out.println("5 - Remover Produto");
+        System.out.println("6 - Sair");
+        System.out.println("******************************");
+        System.out.print("Escolha uma opção: ");
+    }
+
+    public static void cadastrarProduto() {
+        System.out.println("\nCADASTRO DE NOVO PRODUTO");
+        System.out.print("Digite o nome do produto: ");
+        String nome = scanner.nextLine();
+        System.out.print("Digite a descrição do produto: ");
+        String descricao = scanner.nextLine();
+        System.out.print("Digite o país de origem do produto: ");
+        String pais = scanner.nextLine();
+        System.out.print("Digite o preço do produto: ");
+        float preco = scanner.nextFloat();
+        Produto produto = new Produto(0, nome, descricao, pais, preco);
+        produtoController.cadastrarNovoProduto(produto);
+    }
+
+    public static void listarProdutos() {
+        System.out.println("\nLISTA DE PRODUTOS");
+        produtoController.listarProdutos().forEach(System.out::println);
+    }
+
+    public static void buscarProdutoPorId() {
+        System.out.println("\nBUSCA DE PRODUTO POR ID");
+        System.out.print("Digite o ID do produto: ");
+        int id = scanner.nextInt();
+        Optional<Produto> produtoOptional = produtoController.buscarProdutoPorId(id);
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+            System.out.println("Produto encontrado:");
+            System.out.println(produto);
+        } else {
+            System.out.println("Produto com o ID " + id + " não encontrado.");
+        }
+    }
+
+    public static void atualizarDadosProduto() {
+        System.out.println("\nATUALIZAÇÃO DE DADOS DO PRODUTO");
+        System.out.print("Digite o ID do produto a ser atualizado: ");
+        int id = scanner.nextInt();
+        scanner.nextLine(); // Limpar o buffer do scanner
+        Optional<Produto> produtoOptional = produtoController.buscarProdutoPorId(id);
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+            System.out.print("Digite o novo nome do produto: ");
+            String nome = scanner.nextLine();
+            System.out.print("Digite a nova descrição do produto: ");
+            String descricao = scanner.nextLine();
+            System.out.print("Digite o novo país de origem do produto: ");
+            String pais = scanner.nextLine();
+            System.out.print("Digite o novo preço do produto: ");
+            float preco = scanner.nextFloat();
+            produto.setNome(nome);
+            produto.setDescricao(descricao);
+            produto.setPais(pais);
+            produto.setPreco(preco);
+            produtoController.atualizarDadosProduto(produto);
+        } else {
+            System.out.println("Produto com o ID " + id + " não encontrado.");
+        }
+    }
+
+    public static void removerProduto() {
+        System.out.println("\nREMOÇÃO DE PRODUTO");
+        System.out.print("Digite o ID do produto a ser removido: ");
+        int id = scanner.nextInt();
+        Optional<Produto> produtoOptional = produtoController.buscarProdutoPorId(id);
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+            produtoController.removerProduto(produto);
+        } else {
+            System.out.println("Produto com o ID " + id + " não encontrado.");
+        }
+    }
+
+    public static void pressioneEnterParaContinuar() {
+        System.out.print("\nPressione Enter para continuar...");
+        scanner.nextLine();
+    }
+}

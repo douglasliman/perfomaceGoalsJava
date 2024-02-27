@@ -2,13 +2,12 @@ package ecommerce.model;
 
 public class ChocolateMeioAmargo extends Produto {
     private int teorCacau;
-    private String[] ingredientesAdicionais;
 
     public ChocolateMeioAmargo(int id, String nome, String descricao, String pais, float preco, String tipo,
-                               int teorCacau, String[] ingredientesAdicionais) {
+                               int teorCacau) {
         super(id, nome, descricao, pais, preco, tipo, teorCacau);
         this.teorCacau = teorCacau;
-        this.ingredientesAdicionais = ingredientesAdicionais;
+    
     }
 
     public void exibirInformacoesNutricionais() {
@@ -25,10 +24,7 @@ public class ChocolateMeioAmargo extends Produto {
     public void exibirDetalhes() {
         super.exibirDetalhes(); 
         System.out.println("Teor de Cacau: " + teorCacau);
-        System.out.println("Ingredientes Adicionais: ");
-        for (String ingrediente : ingredientesAdicionais) {
-            System.out.println("- " + ingrediente);
-        }
+       
     }
 
     @Override

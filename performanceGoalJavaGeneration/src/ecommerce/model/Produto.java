@@ -10,7 +10,7 @@ public abstract class Produto {
 	 protected String pais;
 	 protected float preco;
 	 protected String tipo;
-	  protected int estoque;
+	 protected int estoque;
 	  
 	public Produto(int id, String nome, String descricao, String pais, float preco, String tipo,int estoque) {
 		super();

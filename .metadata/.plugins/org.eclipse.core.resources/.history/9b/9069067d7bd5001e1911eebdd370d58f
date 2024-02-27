@@ -1,0 +1,11 @@
+package ecommerce.controller;
+
+import ecommerce.model.Produto;
+
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+public class ProdutoController implements ProdutoRepository {
+
+}
