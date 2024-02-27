@@ -9,45 +9,44 @@ import java.util.Set;
 
 public class ProdutoController implements ProdutoRepository {
 
-    private Set<Produto> produtos;
-    private int proximoId;
+	private Set<Produto> produtos;
+	private int proximoId;
 
-    public ProdutoController() {
-        this.produtos = new HashSet<>();
-        this.proximoId = 1;
-    }
+	public ProdutoController() {
+		this.produtos = new HashSet<>();
+		this.proximoId = 1;
+	}
 
-    @Override
-    public void cadastrarNovoProduto(Produto produto) {
-        produtos.add(produto);
-        proximoId = Math.max(proximoId, produto.getId() + 1);
-    }
+	@Override
+	public void cadastrarNovoProduto(Produto produto) {
+		produtos.add(produto);
+		proximoId = Math.max(proximoId, produto.getId() + 1);
+	}
 
+	@Override
+	public void atualizarDadosProduto(Produto produto) {
+		produtos.removeIf(p -> p.getId() == produto.getId());
+		produtos.add(produto);
+	}
 
-    @Override
-    public void atualizarDadosProduto(Produto produto) {
-        produtos.removeIf(p -> p.getId() == produto.getId());
-        produtos.add(produto);
-    }
+	@Override
+	public void removerProduto(int idProduto) {
+		produtos.removeIf(p -> p.getId() == idProduto);
+	}
 
-    @Override
-    public void removerProduto(int idProduto) {
-        produtos.removeIf(p -> p.getId() == idProduto);
-    }
+	@Override
+	public Optional<Produto> buscarProdutoPorId(int idProduto) {
+		return produtos.stream().filter(p -> p.getId() == idProduto).findFirst();
+	}
 
-    @Override
-    public Optional<Produto> buscarProdutoPorId(int idProduto) {
-        return produtos.stream().filter(p -> p.getId() == idProduto).findFirst();
-    }
-
-    @Override
-    public Set<Produto> buscarTodosProdutos() {
-        return produtos;
-    }
+	@Override
+	public Set<Produto> buscarTodosProdutos() {
+		return produtos;
+	}
 
 	@Override
 	public Optional<Produto> buscarProdutoPorNome(String nome) {
-		// TODO Auto-generated method stub
-		return produtos.stream().filter(p -> p.getNome() == nome).findAny();
+		return produtos.stream().filter(p -> p.getNome().equalsIgnoreCase(nome)).findFirst();
 	}
+
 }

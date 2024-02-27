@@ -17,7 +17,7 @@ public class Menu {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         ProdutoRepository produtoRepository = new ProdutoController();
-        Produto produto1 = new ChocolateAoLeite(1000, "Chocolate ao Leite 1", "Delicioso chocolate ao leite", "Brasil", 5.99f, "Chocolate Ao Leite", 20, "Brasil");
+        Produto produto1 = new ChocolateAoLeite(1000, "Chocolate", "Delicioso chocolate ao leite", "Brasil", 5.99f, "Chocolate Ao Leite", 20, "Brasil");
         Produto produto2 = new ChocolateAmargo(1001, "Chocolate Amargo 1", "Chocolate amargo com alto teor de cacau", "Bélgica", 7.99f, "Chocolate Amargo", 70);
         Produto produto3 = new ChocolateBranco(1002, "Chocolate Branco 1", "Chocolate branco cremoso e suave", "Suíça", 4.99f, "Chocolate Branco", 0);
         Produto produto4 = new ChocolateMeioAmargo(1003, "Chocolate Meio Amargo 1", "Chocolate meio amargo com equilíbrio perfeito de sabores", "Peru", 6.99f, "Chocolate Meio Amargo", 50);
@@ -87,7 +87,7 @@ public class Menu {
         System.out.println("            3 - Atualizar dados do produto           ");
         System.out.println("            4 - Apagar produto                       ");
         System.out.println("            5 - buscar por id	                      ");
-        System.out.println("            6 - buscar por nome	                      ");
+        System.out.println("            6 - buscar por id	                      ");
         System.out.println("            7 - Sair                                 ");
         System.out.println("                                                     ");
         System.out.println("*****************************************************");

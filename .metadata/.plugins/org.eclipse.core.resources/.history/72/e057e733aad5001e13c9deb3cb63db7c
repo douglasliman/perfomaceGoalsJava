@@ -16,6 +16,5 @@ public interface ProdutoRepository {
     
     Optional<Produto> buscarProdutoPorNome(String nome);
 
-
     Set<Produto> buscarTodosProdutos();
 }

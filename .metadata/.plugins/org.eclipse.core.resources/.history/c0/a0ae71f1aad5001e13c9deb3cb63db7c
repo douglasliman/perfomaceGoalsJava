@@ -87,7 +87,7 @@ public class Menu {
         System.out.println("            3 - Atualizar dados do produto           ");
         System.out.println("            4 - Apagar produto                       ");
         System.out.println("            5 - buscar por id	                      ");
-        System.out.println("            6 - buscar por nome	                      ");
+        System.out.println("            6 - buscar por 	                      ");
         System.out.println("            7 - Sair                                 ");
         System.out.println("                                                     ");
         System.out.println("*****************************************************");
@@ -253,11 +253,9 @@ public class Menu {
             System.out.println("-----------------------------");
         }
     }
-    
     private static void buscarProdutoPorNome(Scanner input, ProdutoRepository produtoRepository) {
         System.out.println("Digite o Nome do produto a ser encontrado:");
-        String nomeProduto = input.nextLine();
-        input.nextLine();
+        String nomeProduto = input.nextLine().trim();
 
         Optional<Produto> produtoOptional = produtoRepository.buscarProdutoPorNome(nomeProduto);
 
@@ -272,6 +270,7 @@ public class Menu {
             System.out.println("-----------------------------");
         }
     }
+
     public static void removerProduto(Scanner input, ProdutoRepository produtoRepository) {
         System.out.println("Digite o ID do produto a ser removido:");
         int idProduto = input.nextInt();
