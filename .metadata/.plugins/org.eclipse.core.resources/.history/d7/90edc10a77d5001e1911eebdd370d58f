@@ -2,7 +2,6 @@ package ecommerce.repository;
 
 import ecommerce.model.Produto;
 import java.util.Optional;
-import java.util.Set;
 
 public interface ProdutoRepository {
 
@@ -18,7 +17,5 @@ public interface ProdutoRepository {
 
     void removerProduto(int idProduto);
 
-    Optional<Produto> buscarProdutoPorId(int idProduto); 
-
-    Set<Produto> buscarTodosProdutos();
+    Optional<Produto> buscarProdutoPorId(int idProduto);
 }
